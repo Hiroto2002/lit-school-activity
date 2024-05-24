@@ -98,7 +98,7 @@ export default function Home() {
           <br />
           推しメンターにたくさん投票し1位にしよう！！
         </p>
-        <div className="flex flex-row gap-[20px] flex-wrap max-w-[1000px]">
+        <div className="flex flex-row gap-[20px] flex-wrap max-w-[1000px] mb-[100px]">
           {MENTORS.map((mentor) => (
             <MentorFrame
               key={mentor.id}

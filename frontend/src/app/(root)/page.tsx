@@ -72,6 +72,7 @@ export default function Home() {
             <div className="flex gap-[44px]">
               {ranks.map((mentor, index) => (
                 <RankFrame
+                  key={mentor.id}
                   name={mentor.name}
                   count={RANK_COLOR[index].id}
                   avatar={mentor.avatar}

@@ -3,16 +3,69 @@ import { DescriptionArticle } from "@/components/root/DescriptionArticle";
 import { MentorFrame } from "@/components/root/MentorFrame";
 import { RankFrame } from "@/components/root/RankFrame";
 import { Mentor, MENTORS } from "@/constants/mentor";
+import { DbResponse } from "@/types";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Rank<T> = [T, T, T];
 export default function Home() {
+  const [mentors, setMentors] = useState<Mentor[]>(MENTORS);
   const [ranks, setRanks] = useState<Rank<Mentor>>([
-    MENTORS[1],
     MENTORS[0],
+    MENTORS[1],
     MENTORS[2],
   ]);
+
+  useEffect(() => {
+    updateRank();
+  }, [mentors]);
+
+  const handleSetCount = (id: number, count: number) => {
+    setMentors((prevData) =>
+      prevData.map((item) => (item.id === id ? { ...item, count } : item))
+    );
+  };
+
+  // データを取得し、countプロパティを更新する関数
+  const fetchAndUpdateCount = async () => {
+    try {
+      const response = await fetch("/api/v1/vote");
+
+      const result = (await response.json()) as DbResponse<
+        { userId: number; count: number }[]
+      >;
+
+      setMentors((prevData) =>
+        prevData.map((item) => {
+          const updatedItem = result.data.find(
+            (newItem) => newItem.userId === item.id
+          );
+          return updatedItem ? { ...item, count: updatedItem.count } : item;
+        })
+      );
+      updateRank();
+    } catch (error) {
+      console.error("エラーが発生しました:", error);
+    }
+  };
+
+  // rankingを更新する関数
+  const updateRank = () => {
+    const sortedMentors = [...mentors].sort((a, b) => b.count - a.count);
+    setRanks([sortedMentors[1], sortedMentors[0], sortedMentors[2]]);
+  };
+
+  useEffect(() => {
+    // 初回のデータ取得
+    fetchAndUpdateCount();
+
+    // 10秒ごとにデータを取得してcountを更新
+    const intervalId = setInterval(fetchAndUpdateCount, 10000);
+
+    // クリーンアップ関数でintervalをクリア
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <main
       className="flex flex-col justify-center items-center  w-full bg-[#EFEFEF]"
@@ -100,13 +153,11 @@ export default function Home() {
           推しメンターにたくさん投票し1位にしよう！！
         </p>
         <div className="flex flex-row gap-[20px] flex-wrap max-w-[1000px] mb-[100px]">
-          {MENTORS.map((mentor) => (
+          {mentors.map((mentor) => (
             <MentorFrame
               key={mentor.id}
-              id={mentor.id}
-              name={mentor.name}
-              avatar={mentor.avatar}
-              count={mentor.count}
+              handleSetCount={handleSetCount}
+              {...mentor}
             />
           ))}
         </div>

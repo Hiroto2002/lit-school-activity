@@ -16,11 +16,34 @@ export async function POST(req: Request) {
       data: data,
     });
 
-    console.log(votes);
+    const voteCount = await prisma.vote.count({
+      where: {
+        userId: data[0].userId,
+      },
+    });
 
-    return Response.json({ data: votes, status: 200, message: "success" });
+    return Response.json({ data: voteCount, status: 200, message: "success" });
   } catch (error) {
     console.log(error);
     return Response.json({ error: error, status: 500, message: "error" });
   }
+}
+
+export async function GET(req: Request) {
+  const data = await prisma.vote.groupBy({
+    by: ["userId"],
+    _count: {
+      userId: true,
+    },
+  });
+  const userVotesCount = data.map((group) => ({
+    userId: group.userId,
+    count: group._count.userId,
+  }));
+
+  return Response.json({
+    data: userVotesCount,
+    status: 200,
+    message: "success",
+  });
 }

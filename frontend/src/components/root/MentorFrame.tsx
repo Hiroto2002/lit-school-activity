@@ -2,19 +2,26 @@ import { Mentor } from "@/constants/mentor";
 import React, { useState } from "react";
 import Image from "next/image";
 import { PostButton } from "./PostButton";
+import { DbResponse } from "@/types";
 
-type Props = Mentor;
+type Props = Mentor & {
+  handleSetCount: (id: number, count: number) => void;
+};
 
 export const MentorFrame = (props: Props) => {
-  const { name, avatar, id, count } = props;
+  const { name, avatar, id, count, handleSetCount } = props;
   const [isActive, setIsActive] = useState(false);
+  const [isHover, setIsHover] = useState(false);
   const handleSetIsActive = () => {
     setIsActive((prev) => !prev);
+  };
+  const handleSetIsHover = () => {
+    setIsHover((prev) => !prev);
   };
   const handlePost = async (id: number) => {
     handleSetIsActive();
     try {
-      const result = await fetch("/api/v1/vote", {
+      const response = await fetch("/api/v1/vote", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -22,10 +29,11 @@ export const MentorFrame = (props: Props) => {
         body: JSON.stringify([{ userId: id }]),
       });
 
-      const data = await result.json();
+      const result = (await response.json()) as DbResponse<number>;
 
-      if (data.status === 200) {
-        handleSetIsActive();
+      handleSetIsActive();
+      if (result.status === 200) {
+        handleSetCount(id, result.data);
       }
     } catch (e) {
       console.error(e);
@@ -34,7 +42,11 @@ export const MentorFrame = (props: Props) => {
   };
 
   return (
-    <div className="flex flex-col relative items-center mb-16">
+    <div
+      className="flex flex-col relative items-center mb-16"
+      onMouseEnter={handleSetIsHover}
+      onMouseLeave={handleSetIsHover}
+    >
       <p className="text-white font-black text-2xl z-10 absolute top-[11.55px]">
         {name}
       </p>
@@ -55,7 +67,7 @@ export const MentorFrame = (props: Props) => {
         <path
           d="M155.131 62.3938L27.4155 61.1463C22.8606 61.1019 18.6696 58.6496 16.3994 54.7005C10.7356 44.8482 6.34879 34.3153 3.34452 23.3554L2.86317 21.5994C0.380237 12.5414 7.11716 3.57721 16.5083 3.44303L82.5151 2.49992L82.5214 2.49985L162.995 1.69108C171.996 1.60062 178.903 9.64655 177.451 18.5295L175.981 27.5247C174.541 36.3331 172.09 45.0244 168.73 53.2952C166.487 58.816 161.077 62.4518 155.131 62.3938Z"
           stroke="#252525"
-          stroke-width="3"
+          strokeWidth="3"
         />
         <defs>
           <filter
@@ -65,9 +77,9 @@ export const MentorFrame = (props: Props) => {
             width="178.302"
             height="63.7041"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feBlend
               mode="normal"
               in="SourceGraphic"
@@ -102,12 +114,14 @@ export const MentorFrame = (props: Props) => {
         className="mt-8 rounded-2xl"
         style={{ border: "4px solid #252525" }}
       />
-      {isActive && (
+      {isHover && (
         <div
-          className="mt-8 rounded-2xl w-80 h-80 bg-[#000000aa] absolute"
+          className="mt-8 rounded-2xl w-80 h-80 bg-[#000000aa] absolute flex  justify-center"
           style={{ border: "4px solid #252525" }}
         >
-          <p className="text-white">{count}</p>
+          <p className="text-white text-5xl relative top-20">
+            {count > 5 ? count : "?"}
+          </p>
         </div>
       )}
       <PostButton id={id} isActive={isActive} handlePost={handlePost} />

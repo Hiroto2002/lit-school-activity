@@ -26,7 +26,7 @@ export const DescriptionFrame = (props: Props) => {
             <path
               d="M7.33683 18.6742C6.95128 10.9632 13.0994 4.5 20.82 4.5H307.18C314.901 4.5 321.049 10.9632 320.663 18.6742L312.263 186.674C311.904 193.859 305.974 199.5 298.78 199.5H29.22C22.0262 199.5 16.0961 193.859 15.7368 186.674L7.33683 18.6742Z"
               stroke={color}
-              stroke-width="5"
+              strokeWidth="5"
             />
           </g>
           <path
@@ -41,9 +41,9 @@ export const DescriptionFrame = (props: Props) => {
               width="326.361"
               height="208"
               filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
+              colorInterpolationFilters="sRGB"
             >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feFlood floodOpacity="0" result="BackgroundImageFix" />
               <feColorMatrix
                 in="SourceAlpha"
                 type="matrix"
@@ -87,7 +87,7 @@ export const DescriptionFrame = (props: Props) => {
             <path
               d="M15.7368 17.3258C16.0961 10.141 22.0262 4.5 29.22 4.5H298.78C305.974 4.5 311.904 10.141 312.263 17.3258L320.663 185.326C321.049 193.037 314.901 199.5 307.18 199.5H20.82C13.0994 199.5 6.95128 193.037 7.33683 185.326L15.7368 17.3258Z"
               stroke={color}
-              stroke-width="5"
+              strokeWidth="5"
             />
           </g>
           <path
@@ -103,9 +103,9 @@ export const DescriptionFrame = (props: Props) => {
               width="326.361"
               height="208"
               filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
+              colorInterpolationFilters="sRGB"
             >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feFlood floodOpacity="0" result="BackgroundImageFix" />
               <feColorMatrix
                 in="SourceAlpha"
                 type="matrix"

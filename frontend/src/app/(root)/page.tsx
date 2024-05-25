@@ -81,7 +81,7 @@ export default function Home() {
     >
       <section className="flex w-full justify-center items-center mb-28">
         <Image
-          src="/img/key-visual.png"
+          src="/img/mainVisual.webp"
           width={1512}
           height={800}
           alt="キービジュアル"

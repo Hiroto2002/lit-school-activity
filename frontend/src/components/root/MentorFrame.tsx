@@ -5,11 +5,11 @@ import { PostButton } from "./PostButton";
 import { DbResponse } from "@/types";
 
 type Props = Mentor & {
-  handleSetCount: (id: number, count: number) => void;
+  virtualIncrement: (id: number) => void;
 };
 
 export const MentorFrame = (props: Props) => {
-  const { name, avatar, id, count, handleSetCount } = props;
+  const { name, avatar, id, count, virtualIncrement } = props;
   const [isActive, setIsActive] = useState(false);
   const [isHover, setIsHover] = useState(false);
   const handleSetIsActive = () => {
@@ -33,7 +33,7 @@ export const MentorFrame = (props: Props) => {
 
       handleSetIsActive();
       if (result.status === 200) {
-        handleSetCount(id, result.data);
+        virtualIncrement(id);
       }
     } catch (e) {
       console.error(e);

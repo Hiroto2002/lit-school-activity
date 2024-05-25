@@ -1,20 +1,20 @@
 import { Vote } from "@prisma/client";
 import { prisma } from "../../../../../prisma/db";
+import { addToQueue } from "@/lib/queue";
 
 type RequestBodyVote = {
   userId: number;
 };
 export async function POST(req: Request) {
   const data = (await req.json()) as RequestBodyVote[];
+  // キューの作成
 
   if (data.length === 0) {
     return Response.json({ status: 400, message: "Bad Request" });
   }
 
   try {
-    const votes = await prisma.vote.createMany({
-      data: data,
-    });
+    data.forEach((vote) => addToQueue(vote));
 
     const voteCount = await prisma.vote.count({
       where: {

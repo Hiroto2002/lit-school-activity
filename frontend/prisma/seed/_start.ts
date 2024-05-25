@@ -6,7 +6,7 @@ async function main() {
   await prisma.vote.deleteMany();
   await prisma.user.deleteMany();
   await user();
-  await vote();
+  // await vote();
 }
 
 main()

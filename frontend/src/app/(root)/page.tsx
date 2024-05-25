@@ -20,6 +20,14 @@ export default function Home() {
     updateRank();
   }, [mentors]);
 
+  const virtualIncrement = (id: number) => {
+    setMentors((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, count: item.count + 1 } : item
+      )
+    );
+  };
+
   const handleSetCount = (id: number, count: number) => {
     setMentors((prevData) =>
       prevData.map((item) => (item.id === id ? { ...item, count } : item))
@@ -90,7 +98,9 @@ export default function Home() {
           >
             そもそも
           </span>
-          <span className="text-[40px] ">メンター総選挙とは</span>
+          <span className="text-[40px] " id="description">
+            メンター総選挙とは
+          </span>
         </p>
         <div className="flex flex-row gap-[20px]">
           {DESCRIPTION.map((desc, index) => (
@@ -119,7 +129,10 @@ export default function Home() {
               height={197}
               className=""
             />
-            <p className="relative -top-[96px] text-[2.5rem] text-white">
+            <p
+              className="relative -top-[96px] text-[2.5rem] text-white"
+              id="rank"
+            >
               ランキング
             </p>
             <div className="flex gap-[44px]">
@@ -137,7 +150,10 @@ export default function Home() {
         </div>
       </section>
       <section className="flex flex-col items-center relative gap-4">
-        <p className="absolute top-[103px] text-[36px] font-black text-white z-10">
+        <p
+          className="absolute top-[103px] text-[36px] font-black text-white z-10"
+          id="vote"
+        >
           投票はこちら
         </p>
         <Image
@@ -156,7 +172,7 @@ export default function Home() {
           {mentors.map((mentor) => (
             <MentorFrame
               key={mentor.id}
-              handleSetCount={handleSetCount}
+              virtualIncrement={virtualIncrement}
               {...mentor}
             />
           ))}

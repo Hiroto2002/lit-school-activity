@@ -21,8 +21,8 @@ const processQueue = async () => {
   }
 };
 
-// 10秒ごとにキューを処理
-setInterval(processQueue, 10000);
+// 1秒ごとにキューを処理
+setInterval(processQueue, 1000);
 
 export const addToQueue = (vote: RequestBodyVote) => {
   voteQueue.push(vote);

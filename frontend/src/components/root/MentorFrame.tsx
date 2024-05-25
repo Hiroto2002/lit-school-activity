@@ -119,9 +119,7 @@ export const MentorFrame = (props: Props) => {
           className="mt-8 rounded-2xl w-80 h-80 bg-[#000000aa] absolute flex  justify-center"
           style={{ border: "4px solid #252525" }}
         >
-          <p className="text-white text-5xl relative top-20">
-            {count > 5 ? count : "?"}
-          </p>
+          <p className="text-white text-5xl relative top-20">{count}</p>
         </div>
       )}
       <PostButton id={id} isActive={isActive} handlePost={handlePost} />

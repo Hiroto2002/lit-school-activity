@@ -46,8 +46,8 @@ export const MENTORS: Mentor[] = [
 
   {
     id: 7,
-    name: "コンテナ",
-    avatar: "/img/container.png",
+    name: "あやぽ",
+    avatar: "/img/ayapo.png",
     count: 0,
   },
 

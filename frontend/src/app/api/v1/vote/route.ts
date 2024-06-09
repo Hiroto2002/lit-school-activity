@@ -36,10 +36,12 @@ export async function GET(req: Request) {
       userId: true,
     },
   });
+
   const userVotesCount = data.map((group) => ({
     userId: group.userId,
     count: group._count.userId,
   }));
+  // console.log(userVotesCount);
 
   return Response.json({
     data: userVotesCount,
